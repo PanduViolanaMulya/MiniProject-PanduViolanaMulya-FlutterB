@@ -1,4 +1,6 @@
 class GeometriSMA {
+  final String subject = 'geometri';
+  final String grade = 'SMA';
   final String soal;
   final String jawabA;
   final String jawabB;

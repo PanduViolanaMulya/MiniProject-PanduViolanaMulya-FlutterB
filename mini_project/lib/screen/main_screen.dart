@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/screen/history_page.dart';
 import 'package:mini_project/screen/history_page_builder.dart';
-import 'sd_list_soal.dart';
+import 'list_soal.dart';
 import 'package:mini_project/screen/home_page.dart';
 import 'package:mini_project/screen/account_page.dart';
 import 'package:mini_project/model/result_db.dart';
@@ -44,47 +44,71 @@ class _HomePageState extends State<HomePage> {
               height: 10,
             ),
             Card(
-                color: Colors.cyan,
-                margin: EdgeInsets.all(10),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => SdListSoal(),
-                        ));
-                  },
-                  splashColor: Color.fromARGB(104, 33, 33, 33),
-                  child: Container(
-                      margin: EdgeInsets.only(left: 20),
-                      alignment: Alignment.centerLeft,
-                      height: 30,
-                      child: Text('SD')),
-                )),
+              color: Colors.cyan,
+              margin: EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListSoal(
+                        grade: 'SD',
+                      ),
+                    ),
+                  );
+                },
+                splashColor: Color.fromARGB(104, 33, 33, 33),
+                child: Container(
+                    margin: EdgeInsets.only(left: 20),
+                    alignment: Alignment.centerLeft,
+                    height: 30,
+                    child: Text('SD')),
+              ),
+            ),
             Card(
-                color: Colors.cyan,
-                margin: EdgeInsets.all(10),
-                child: InkWell(
-                  onTap: () {},
-                  splashColor: Color.fromARGB(104, 33, 33, 33),
-                  child: Container(
-                      margin: EdgeInsets.only(left: 20),
-                      alignment: Alignment.centerLeft,
-                      height: 30,
-                      child: Text('SMP')),
-                )),
+              color: Colors.cyan,
+              margin: EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListSoal(
+                        grade: 'SMP',
+                      ),
+                    ),
+                  );
+                },
+                splashColor: Color.fromARGB(104, 33, 33, 33),
+                child: Container(
+                    margin: EdgeInsets.only(left: 20),
+                    alignment: Alignment.centerLeft,
+                    height: 30,
+                    child: Text('SMP')),
+              ),
+            ),
             Card(
-                color: Colors.cyan,
-                margin: EdgeInsets.all(10),
-                child: InkWell(
-                  onTap: () {},
-                  splashColor: Color.fromARGB(104, 33, 33, 33),
-                  child: Container(
-                      margin: EdgeInsets.only(left: 20),
-                      alignment: Alignment.centerLeft,
-                      height: 30,
-                      child: Text('SMA')),
-                )),
+              color: Colors.cyan,
+              margin: EdgeInsets.all(10),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListSoal(
+                        grade: 'SMA',
+                      ),
+                    ),
+                  );
+                },
+                splashColor: Color.fromARGB(104, 33, 33, 33),
+                child: Container(
+                    margin: EdgeInsets.only(left: 20),
+                    alignment: Alignment.centerLeft,
+                    height: 30,
+                    child: Text('SMA')),
+              ),
+            ),
             Card(
                 color: Colors.cyan,
                 margin: EdgeInsets.all(10),

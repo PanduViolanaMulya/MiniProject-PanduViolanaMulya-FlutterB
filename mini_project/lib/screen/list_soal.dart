@@ -2,28 +2,64 @@ import 'package:flutter/material.dart';
 import 'package:mini_project/model/soal/sd/sd_aljabar.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:mini_project/model/soal/sma/sma_aljabar.dart';
+import 'package:mini_project/model/soal/sma/sma_geometri.dart';
+import 'package:mini_project/model/soal/smp/smp_aljabar.dart';
+import 'package:mini_project/model/soal/smp/smp_geometri.dart';
 import 'package:mini_project/screen/quiz_page.dart';
 import 'package:mini_project/model/soal/sd/sd_geometri.dart';
 
-class SdListSoal extends StatefulWidget {
-  const SdListSoal({super.key});
+class ListSoal extends StatefulWidget {
+  final String grade;
+  const ListSoal({required this.grade, super.key});
 
   @override
-  State<SdListSoal> createState() => _SdListSoalState();
+  State<ListSoal> createState() => _ListSoalState(grade: grade);
 }
 
-class _SdListSoalState extends State<SdListSoal> {
-  int sdBidang = 0;
+class _ListSoalState extends State<ListSoal> {
+  String bidang = 'aljabar';
   List soalList = [];
+  String grade;
+
+  _ListSoalState({required this.grade});
+
+  @override
+  void initState() {
+    if (grade == 'SD') {
+      soalList = aljabarSD;
+    } else if (grade == 'SMP') {
+      soalList = aljabarSMP;
+    } else {
+      soalList = aljabarSMA;
+    }
+    super.initState();
+  }
 
   void listChecker() {
-    if (sdBidang == 0) {
+    if (grade == 'SD' && bidang == 'aljabar') {
       setState(() {
         soalList = aljabarSD;
       });
-    } else {
+    } else if (grade == 'SD' && bidang == 'geometri') {
       setState(() {
         soalList = geometriSD;
+      });
+    } else if (grade == 'SMP' && bidang == 'aljabar') {
+      setState(() {
+        soalList = aljabarSMP;
+      });
+    } else if (grade == 'SMP' && bidang == 'geometri') {
+      setState(() {
+        soalList = geometriSMP;
+      });
+    } else if (grade == 'SMA' && bidang == 'aljabar') {
+      setState(() {
+        soalList = aljabarSMA;
+      });
+    } else {
+      setState(() {
+        soalList = geometriSMA;
       });
     }
   }
@@ -32,7 +68,7 @@ class _SdListSoalState extends State<SdListSoal> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('SD'),
+          title: Text(grade),
         ),
         body: Column(children: [
           Container(
@@ -44,8 +80,12 @@ class _SdListSoalState extends State<SdListSoal> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      sdBidang = 0;
+                      bidang = 'aljabar';
                     });
+                    listChecker();
+                    print(grade);
+                    print(bidang);
+                    print(soalList);
                   },
                   child: Container(
                     height: 40,
@@ -57,7 +97,7 @@ class _SdListSoalState extends State<SdListSoal> {
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: sdBidang == 0
+                        color: bidang == 'aljabar'
                             ? Color.fromARGB(255, 184, 55, 46)
                             : Color.fromARGB(255, 255, 156, 148)),
                   ),
@@ -65,8 +105,12 @@ class _SdListSoalState extends State<SdListSoal> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
-                      sdBidang = 1;
+                      bidang = 'geometri';
                     });
+                    listChecker();
+                    print(grade);
+                    print(bidang);
+                    print(soalList);
                   },
                   child: Container(
                     height: 40,
@@ -78,7 +122,7 @@ class _SdListSoalState extends State<SdListSoal> {
                     ),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
-                        color: sdBidang == 1
+                        color: bidang == 'geometri'
                             ? Color.fromARGB(255, 184, 55, 46)
                             : Color.fromARGB(255, 255, 156, 148)),
                   ),
@@ -88,7 +132,7 @@ class _SdListSoalState extends State<SdListSoal> {
           ),
           Expanded(
             child: GridView.builder(
-                itemCount: sdBidang == 0 ? aljabarSD.length : geometriSD.length,
+                itemCount: soalList.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 5),
                 itemBuilder: (context, index) {
@@ -96,13 +140,16 @@ class _SdListSoalState extends State<SdListSoal> {
                     onTap: () {
                       listChecker();
                       print(soalList[index].available);
+                      print(soalList[index].subject);
+                      print(soalList[index].grade);
                       if (soalList[index].available == true) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => QuizPage(
                                 number: index,
-                                id: sdBidang,
+                                grade: grade,
+                                subject: soalList[index].subject,
                               ),
                             ));
                       }
@@ -118,11 +165,11 @@ class _SdListSoalState extends State<SdListSoal> {
                       ),
                       margin: EdgeInsets.all(5),
                       decoration: BoxDecoration(
-                          color: sdBidang == 0
-                              ? (aljabarSD[index].available
+                          color: bidang == 'aljabar'
+                              ? (soalList[index].available
                                   ? Colors.green
                                   : Colors.grey)
-                              : (geometriSD[index].available
+                              : (soalList[index].available
                                   ? Colors.blue
                                   : Colors.grey),
                           borderRadius: BorderRadius.circular(15)),

@@ -4,25 +4,33 @@ import 'package:mini_project/model/soal/sd/sd_aljabar.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:mini_project/model/soal/sd/sd_geometri.dart';
 import 'package:mini_project/model/result_db.dart';
+import 'package:mini_project/model/soal/sma/sma_aljabar.dart';
+import 'package:mini_project/model/soal/sma/sma_geometri.dart';
+import 'package:mini_project/model/soal/smp/smp_aljabar.dart';
+import 'package:mini_project/model/soal/smp/smp_geometri.dart';
 import 'package:provider/provider.dart';
 
 class QuizPage extends StatefulWidget {
   final int number;
-  final int id;
+  final String grade;
+  final String subject;
 
   const QuizPage({
     required this.number,
-    required this.id,
+    required this.grade,
+    required this.subject,
     super.key,
   });
 
   @override
-  State<QuizPage> createState() => _QuizPageState(number: number, id: id);
+  State<QuizPage> createState() =>
+      _QuizPageState(number: number, grade: grade, subject: subject);
 }
 
 class _QuizPageState extends State<QuizPage> {
   int number;
-  int id;
+  String grade;
+  String subject;
   late final ResultDb manager;
   List quizList = [];
   List<int> resultDoneIndexList = [];
@@ -30,7 +38,8 @@ class _QuizPageState extends State<QuizPage> {
 
   _QuizPageState({
     required this.number,
-    required this.id,
+    required this.grade,
+    required this.subject,
   });
 
   LinearGradient selectedAnswerColor =
@@ -42,7 +51,7 @@ class _QuizPageState extends State<QuizPage> {
     setState(() {
       isClicked = jawaban;
     });
-    if (jawaban == aljabarSD[number].benar) {
+    if (jawaban == quizList[number].benar) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('GG')));
     } else {
       ScaffoldMessenger.of(context)
@@ -52,14 +61,18 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   void initState() {
-    if (id == 0) {
-      setState(() {
-        quizList = aljabarSD;
-      });
+    if (grade == 'SD' && subject == 'aljabar') {
+      quizList = aljabarSD;
+    } else if (grade == 'SD' && subject == 'geometri') {
+      quizList = geometriSD;
+    } else if (grade == 'SMP' && subject == 'aljabar') {
+      quizList = aljabarSMP;
+    } else if (grade == 'SMP' && subject == 'geometri') {
+      quizList = geometriSMP;
+    } else if (grade == 'SMA' && subject == 'aljabar') {
+      quizList = aljabarSMA;
     } else {
-      setState(() {
-        quizList = geometriSD;
-      });
+      quizList = geometriSMA;
     }
     // TODO: implement initState
     super.initState();
@@ -69,7 +82,7 @@ class _QuizPageState extends State<QuizPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('SD/ Geometry'),
+        title: Text('$grade / $subject'),
       ),
       body: ListView(
         children: [
@@ -191,12 +204,13 @@ class _QuizPageState extends State<QuizPage> {
                     ;
                   },
                   child: Container(
-                    alignment: Alignment.center,
-                    width: 70,
-                    height: 30,
-                    color: Colors.blue,
-                    child: Text('<<<'),
-                  ),
+                      alignment: Alignment.center,
+                      // width: 70,
+                      height: 50,
+                      // color: Colors.blue,
+                      child: Image(
+                        image: AssetImage('assets/button_previous.png'),
+                      )),
                 ),
                 GestureDetector(
                   onTap: () {
@@ -235,12 +249,24 @@ class _QuizPageState extends State<QuizPage> {
                   },
                   child: Container(
                     alignment: Alignment.center,
-                    width: 70,
-                    height: 30,
-                    color: Colors.orange,
-                    child: Text(
-                      'Finish',
-                      textAlign: TextAlign.center,
+                    width: 90,
+                    height: 50,
+                    // color: Colors.orange,
+                    child: Stack(
+                      children: [
+                        Image(image: AssetImage('assets/button_finish.png')),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 90,
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Finish',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -268,12 +294,13 @@ class _QuizPageState extends State<QuizPage> {
                     ;
                   },
                   child: Container(
-                    alignment: Alignment.center,
-                    width: 70,
-                    height: 30,
-                    color: Color.fromARGB(255, 33, 219, 243),
-                    child: Text('>>>'),
-                  ),
+                      alignment: Alignment.center,
+                      // width: 70,
+                      height: 50,
+                      // color: Color.fromARGB(255, 33, 219, 243),
+                      child: Image(
+                        image: AssetImage('assets/button_next.png'),
+                      )),
                 ),
               ],
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

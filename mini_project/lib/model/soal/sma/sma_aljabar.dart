@@ -1,5 +1,5 @@
 class AljabarSMA {
-  final String subject = 'Aljabar';
+  final String subject = 'aljabar';
   final String grade = 'SMA';
   final String soal;
   final String jawabA;
@@ -37,6 +37,15 @@ List<AljabarSMA> aljabarSMA = [
     jawabC: '3/4',
     jawabD: '4',
     benar: 'c',
+    available: false,
+  ),
+  AljabarSMA(
+    soal: 'f\'(x) = 4x + 7. Berapakah integralnya?',
+    jawabA: 'f(x) = 3x^3 + 4x^2 + C',
+    jawabB: 'f(x) = x^3 + 7x^2 + C',
+    jawabC: 'f(x) = 6x^3 + 4',
+    jawabD: 'f(x) = 2x^2 + 7x + C',
+    benar: 'd',
     available: false,
   ),
 ];

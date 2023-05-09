@@ -55,11 +55,18 @@ class _HomeState extends State<Home> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 148, 196, 243),
+                        // color: Color.fromARGB(255, 148, 196, 243),
                         borderRadius: BorderRadius.circular(10)),
                     width: 70,
                     height: 70,
-                    child: Icon(Icons.shopping_cart_checkout),
+                    child: Stack(
+                      children: [
+                        Image(image: AssetImage('assets/button_action.png')),
+                        Align(
+                            alignment: Alignment.center,
+                            child: Icon(Icons.shopping_cart_checkout)),
+                      ],
+                    ),
                   ),
                 ),
                 InkWell(
@@ -72,11 +79,18 @@ class _HomeState extends State<Home> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 247, 157, 157),
+                        // color: Color.fromARGB(255, 247, 157, 157),
                         borderRadius: BorderRadius.circular(10)),
                     width: 70,
                     height: 70,
-                    child: Icon(Icons.collections),
+                    child: Stack(
+                      children: [
+                        Image(image: AssetImage('assets/button_action.png')),
+                        Align(
+                            alignment: Alignment.center,
+                            child: Icon(Icons.collections)),
+                      ],
+                    ),
                   ),
                 ),
                 InkWell(
@@ -89,11 +103,18 @@ class _HomeState extends State<Home> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 157, 247, 174),
+                        // color: Color.fromARGB(255, 157, 247, 174),
                         borderRadius: BorderRadius.circular(10)),
                     width: 70,
                     height: 70,
-                    child: Icon(Icons.hourglass_bottom),
+                    child: Stack(
+                      children: [
+                        Image(image: AssetImage('assets/button_action.png')),
+                        Align(
+                            alignment: Alignment.center,
+                            child: Icon(Icons.hourglass_bottom)),
+                      ],
+                    ),
                   ),
                 ),
                 InkWell(
@@ -106,11 +127,18 @@ class _HomeState extends State<Home> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 247, 227, 168),
+                        // color: Color.fromARGB(255, 247, 227, 168),
                         borderRadius: BorderRadius.circular(10)),
                     width: 70,
                     height: 70,
-                    child: Icon(Icons.lock_open),
+                    child: Stack(
+                      children: [
+                        Image(image: AssetImage('assets/button_action.png')),
+                        Align(
+                            alignment: Alignment.center,
+                            child: Icon(Icons.lock_open)),
+                      ],
+                    ),
                   ),
                 ),
               ],

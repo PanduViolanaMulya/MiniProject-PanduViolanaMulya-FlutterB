@@ -23,7 +23,33 @@ class HistoryPageBuilder extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final item = resultItem[index];
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => SimpleDialog(
+                          children: [
+                            Text(
+                              'Your Result',
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            ListView.separated(
+                                itemBuilder: itemBuilder,
+                                separatorBuilder: separatorBuilder,
+                                itemCount: itemCount),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            Text('Total Attempt'),
+                            Text('Total Points'),
+                            Text('Total Result'),
+                            Text('Comment'),
+                          ],
+                        ),
+                      );
+                    },
                     child: Container(
                       margin: EdgeInsets.all(15),
                       height: 70,

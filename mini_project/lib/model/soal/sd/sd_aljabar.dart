@@ -1,5 +1,5 @@
 class AljabarSD {
-  final String subject = 'Aljabar';
+  final String subject = 'aljabar';
   final String grade = 'SD';
   final String soal;
   final String jawabA;

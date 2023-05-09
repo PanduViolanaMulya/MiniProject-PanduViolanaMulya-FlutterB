@@ -1,5 +1,6 @@
 class ResultModel {
-  late int? quizNumber;
+  late String session;
+  late int quizNumber;
   late String quizGrade;
   late String quizSubject;
   late String quizYourAnswer;
@@ -7,7 +8,7 @@ class ResultModel {
   late int? quizPoint;
 
   ResultModel({
-    this.quizNumber,
+    required this.quizNumber,
     required this.quizGrade,
     required this.quizSubject,
     required this.quizYourAnswer,
