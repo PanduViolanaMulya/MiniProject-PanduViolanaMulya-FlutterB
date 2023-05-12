@@ -15,7 +15,7 @@ class ResultDb extends ChangeNotifier {
   }
 
   void _getAllResult() async {
-    _resultModel = await _resultHelper.getContact();
+    _resultModel = await _resultHelper.getResult();
     notifyListeners();
     _getAllResult();
   }
@@ -25,12 +25,12 @@ class ResultDb extends ChangeNotifier {
     _getAllResult();
   }
 
-  Future<ResultModel> getResultByNumber(int number) async {
-    return await _resultHelper.getResultByNumber(number);
+  Future<ResultModel> getResultByNumber(int id) async {
+    return await _resultHelper.getResultByNumber(id);
   }
 
-  void deleteResult(int number) async {
-    await _resultHelper.deleteResult(number);
+  void deleteResult(int id) async {
+    await _resultHelper.deleteResult(id);
     _getAllResult();
   }
 }

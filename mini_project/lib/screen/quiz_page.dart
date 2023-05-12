@@ -8,38 +8,49 @@ import 'package:mini_project/model/soal/sma/sma_aljabar.dart';
 import 'package:mini_project/model/soal/sma/sma_geometri.dart';
 import 'package:mini_project/model/soal/smp/smp_aljabar.dart';
 import 'package:mini_project/model/soal/smp/smp_geometri.dart';
+import 'package:mini_project/screen/quiz_result.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class QuizPage extends StatefulWidget {
   final int number;
   final String grade;
   final String subject;
+  final int session;
 
   const QuizPage({
     required this.number,
     required this.grade,
     required this.subject,
+    required this.session,
     super.key,
   });
 
   @override
-  State<QuizPage> createState() =>
-      _QuizPageState(number: number, grade: grade, subject: subject);
+  State<QuizPage> createState() => _QuizPageState(
+      number: number, grade: grade, subject: subject, session: session);
 }
 
 class _QuizPageState extends State<QuizPage> {
   int number;
   String grade;
   String subject;
+  int session;
   late final ResultDb manager;
   List quizList = [];
+  late ResultModel showResult;
   List<int> resultDoneIndexList = [];
   List<ResultModel> resultList = [];
+  late SharedPreferences dbIndex;
+  int point = 0;
+  int dataIndex = 0;
 
   _QuizPageState({
     required this.number,
     required this.grade,
     required this.subject,
+    required this.session,
   });
 
   LinearGradient selectedAnswerColor =
@@ -61,6 +72,7 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   void initState() {
+    resultList.clear();
     if (grade == 'SD' && subject == 'aljabar') {
       quizList = aljabarSD;
     } else if (grade == 'SD' && subject == 'geometri') {
@@ -74,8 +86,22 @@ class _QuizPageState extends State<QuizPage> {
     } else {
       quizList = geometriSMA;
     }
-    // TODO: implement initState
+
+    initial();
     super.initState();
+  }
+
+  void initial() async {
+    dbIndex = await SharedPreferences.getInstance();
+
+    setState(() {
+      dbIndex.getInt('dbIndex') == null
+          ? dataIndex = 0
+          : dataIndex = dbIndex.getInt('dbIndex')!;
+      dbIndex.getInt('points') == null
+          ? point = 0
+          : point = dbIndex.getInt('points')!;
+    });
   }
 
   @override
@@ -169,6 +195,7 @@ class _QuizPageState extends State<QuizPage> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        print(dataIndex);
                         checkAnswer('d');
                       },
                       child: Container(
@@ -195,6 +222,7 @@ class _QuizPageState extends State<QuizPage> {
               children: [
                 GestureDetector(
                   onTap: () {
+                    print(dataIndex);
                     if (number != 0) {
                       setState(() {
                         number = number - 1;
@@ -214,44 +242,74 @@ class _QuizPageState extends State<QuizPage> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    point = dbIndex.getInt('points')!;
+                    dbIndex.setInt('dbIndex', dataIndex);
+
+                    setState(() {
+                      dataIndex = dbIndex.getInt('dbIndex')!;
+                    });
+                    int thisPoint = 0;
+                    if (isClicked == quizList[number].benar) {
+                      thisPoint = 20;
+                    }
+
                     final quiz = ResultModel(
-                        quizGrade: quizList[number].grade,
-                        quizSubject: quizList[number].subject,
-                        quizYourAnswer: isClicked,
-                        quizCorrextAnswer: quizList[number].benar);
+                      session: session,
+                      quizNumber: number + 1,
+                      quizGrade: quizList[number].grade,
+                      quizSubject: quizList[number].subject,
+                      quizYourAnswer: isClicked,
+                      quizCorrextAnswer: quizList[number].benar,
+                      id: dataIndex,
+                      quizPoint: thisPoint,
+                    );
                     Provider.of<ResultDb>(context, listen: false)
                         .addResult(quiz);
+
+                    setState(() {
+                      dataIndex = dataIndex + 1;
+                    });
+
+                    dbIndex.setInt('dbIndex', dataIndex);
+                    point = point + thisPoint;
+                    dbIndex.setInt('points', point);
+
+                    dbIndex.setInt('resultSession 0', resultList.length);
                     resultList.add(quiz);
 
-                    resultDoneIndexList.add(resultList.length);
-                    print(resultDoneIndexList);
-
                     showDialog(
-                      context: context,
-                      builder: (context) => SimpleDialog(
-                        children: [
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text('Your Result'),
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Container(
-                            height: 500,
-                            width: 400,
-                            child: ListView.builder(
-                                itemBuilder: (context, index) {}),
-                          )
-                        ],
-                      ),
-                    );
+                        context: context,
+                        builder: (context) {
+                          return Consumer<ResultDb>(
+                            builder: (context, manager, child) {
+                              final resultItems = manager.resultModel;
+                              for (int j = 0; j < resultList.length; j++) {
+                                int k = j;
+                                for (int i = 0; i < resultItems.length; i++) {
+                                  if (resultItems[i].session == session) {
+                                    if (j == 0) {
+                                      resultList[j] = resultItems[i];
+                                      break;
+                                    } else {
+                                      for (k = 0; k == j; k++) {
+                                        resultList[k] == resultItems[i]
+                                            ? null
+                                            : resultList[j] = resultItems[i];
+                                      }
+                                      break;
+                                    }
+                                  }
+                                }
+                              }
+                              return QuizResult(resultList: resultList);
+                            },
+                          );
+                        });
                   },
                   child: Container(
                     alignment: Alignment.center,
                     width: 90,
                     height: 50,
-                    // color: Colors.orange,
                     child: Stack(
                       children: [
                         Image(image: AssetImage('assets/button_finish.png')),
@@ -273,17 +331,37 @@ class _QuizPageState extends State<QuizPage> {
                 GestureDetector(
                   onTap: () {
                     if (number != quizList.length - 1) {
+                      dbIndex.setInt('dbIndex', dataIndex);
+
+                      dataIndex = dbIndex.getInt('dbIndex')!.toInt();
+                      point = dbIndex.getInt('points')!;
+                      int thisPoint = 0;
+                      if (isClicked == quizList[number].benar) {
+                        thisPoint = 20;
+                      }
+
                       final quiz = ResultModel(
-                          quizGrade: quizList[number].grade,
-                          quizSubject: quizList[number].subject,
-                          quizYourAnswer: isClicked,
-                          quizCorrextAnswer: quizList[number].benar);
+                        quizNumber: number + 1,
+                        session: session,
+                        quizGrade: quizList[number].grade,
+                        quizSubject: quizList[number].subject,
+                        quizYourAnswer: isClicked,
+                        quizCorrextAnswer: quizList[number].benar,
+                        id: dataIndex,
+                        quizPoint: thisPoint,
+                      );
                       Provider.of<ResultDb>(context, listen: false)
                           .addResult(quiz);
-                      resultList.add(quiz);
-                      resultDoneIndexList.add(resultList.length);
-                      print(resultDoneIndexList);
 
+                      resultList.add(quiz);
+                      setState(() {
+                        dataIndex = dataIndex + 1;
+                      });
+                      dbIndex.setInt('dbIndex', dataIndex);
+                      point = point + thisPoint;
+                      dbIndex.setInt('points', point);
+
+                      resultDoneIndexList.add(resultList.length);
                       setState(() {
                         quizList[number + 1].available = true;
 

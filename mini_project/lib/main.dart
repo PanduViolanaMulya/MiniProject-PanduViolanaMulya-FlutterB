@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/model/result_db.dart';
+import 'package:mini_project/screen/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 import 'screen/login_screen.dart';
 import 'screen/main_screen.dart';
@@ -19,9 +20,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.red,
         ),
-        home: LoginScreen(),
+        home: OnBoardingScreen(),
       ),
     );
   }

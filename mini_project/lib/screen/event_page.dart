@@ -16,7 +16,16 @@ class _EventPageState extends State<EventPage> {
       appBar: AppBar(
         title: Text('Events'),
       ),
-      body: body(),
+      body: Container(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        child: Stack(
+          children: [
+            Image(image: AssetImage('assets/screen_event.gif')),
+            body(),
+          ],
+        ),
+      ),
     );
   }
 

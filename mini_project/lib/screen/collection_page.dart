@@ -18,34 +18,43 @@ class _CollectionPageState extends State<CollectionPage> {
         title: Text('My Collections'),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: shop.length,
-        itemBuilder: ((context, index) {
-          return shop[index].isBought
-              ? Container(
-                  margin: EdgeInsets.all(20),
-                  height: 50,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Color.fromARGB(255, 215, 237, 149)),
-                  child: Row(
-                    children: [
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(shop[index].shopIcon),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text('${shop[index].shopItem}'),
-                      SizedBox(
-                        width: 10,
-                      ),
-                    ],
-                  ),
-                )
-              : Container();
-        }),
+      body: Container(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        child: Stack(
+          children: [
+            Image(image: AssetImage('assets/screen_collection.gif')),
+            ListView.builder(
+              itemCount: shop.length,
+              itemBuilder: ((context, index) {
+                return shop[index].isBought
+                    ? Container(
+                        margin: EdgeInsets.all(20),
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: Color.fromARGB(255, 215, 237, 149)),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Icon(shop[index].shopIcon),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Text('${shop[index].shopItem}'),
+                            SizedBox(
+                              width: 10,
+                            ),
+                          ],
+                        ),
+                      )
+                    : Container();
+              }),
+            ),
+          ],
+        ),
       ),
     );
   }

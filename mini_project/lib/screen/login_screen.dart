@@ -56,100 +56,157 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Form(
-          key: formKey,
-          child: ListView(
-            children: [
-              TextFormField(
-                controller: nameController,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.person),
-                  hintText: 'Masukkan nama pengguna',
-                  labelText: 'Nama Pengguna',
-                  border: OutlineInputBorder(),
-                  filled: true,
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Nama wajib diisi';
-                  } else if (value.length < 2) {
-                    return 'Gunakan setidaknya 2 huruf';
-                  } else if (!RegExp(r'^[a-zA-Z]').hasMatch(value)) {
-                    return 'Nama tidak boleh berupa angka atau simbol';
-                  } else if (!RegExp(r'^[A-Z]').hasMatch(value[0])) {
-                    return 'Huruf pertama harus kapital';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                controller: emailController,
-                decoration: InputDecoration(
-                    icon: Icon(Icons.email),
-                    hintText: 'Masukkan E-Mail',
-                    labelText: 'E-Mail',
-                    border: OutlineInputBorder(),
-                    filled: true),
-                validator: (value) {
-                  validateEmail();
+      // resizeToAvoidBottomInset: false,
+      body: Container(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        child: Stack(
+          children: [
+            SizedBox(
+                height: double.maxFinite,
+                width: double.maxFinite,
+                child: Image(
+                    fit: BoxFit.fitHeight,
+                    image: AssetImage('assets/screen_login.gif'))),
+            Form(
+                key: formKey,
+                child: Stack(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        children: [
+                          SizedBox(
+                            height: 495,
+                          ),
+                          TextFormField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              icon: Icon(Icons.person),
+                              hintText: 'Masukkan nama pengguna',
+                              labelText: 'Nama Pengguna',
+                              border: OutlineInputBorder(),
+                              filled: true,
+                            ),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Nama wajib diisi';
+                              } else if (value.length < 2) {
+                                return 'Gunakan setidaknya 2 huruf';
+                              } else if (!RegExp(r'^[a-zA-Z]')
+                                  .hasMatch(value)) {
+                                return 'Nama tidak boleh berupa angka atau simbol';
+                              } else if (!RegExp(r'^[A-Z]')
+                                  .hasMatch(value[0])) {
+                                return 'Huruf pertama harus kapital';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.email),
+                                hintText: 'Masukkan E-Mail',
+                                labelText: 'E-Mail',
+                                border: OutlineInputBorder(),
+                                filled: true),
+                            validator: (value) {
+                              validateEmail();
 
-                  if (value!.isEmpty) {
-                    return 'E-Mail wajib diisi';
-                  } else if (emailValid == false) {
-                    return 'Masukkan E-Mail dengan Benar';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              TextFormField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    icon: Icon(Icons.person),
-                    hintText: 'Masukkan Password',
-                    labelText: 'Password',
-                    border: OutlineInputBorder(),
-                    filled: true),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Password wajib diisi';
-                  } else if (value.length < 5) {
-                    return 'Gunakan setidaknya 5 huruf';
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    String username = nameController.text;
-                    if (formKey.currentState!.validate()) {
-                      loginData.setBool('login', false);
-                      loginData.setString('username', username);
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                          (route) => false);
-                    } else {}
-                  },
-                  child: Text('Log In')),
-              SizedBox(
-                height: 5,
-              ),
-            ],
-          )),
+                              if (value!.isEmpty) {
+                                return 'E-Mail wajib diisi';
+                              } else if (emailValid == false) {
+                                return 'Masukkan E-Mail dengan Benar';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                icon: Icon(Icons.person),
+                                hintText: 'Masukkan Password',
+                                labelText: 'Password',
+                                border: OutlineInputBorder(),
+                                filled: true),
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Password wajib diisi';
+                              } else if (value.length < 5) {
+                                return 'Gunakan setidaknya 5 huruf';
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  String username = nameController.text;
+                                  if (formKey.currentState!.validate()) {
+                                    loginData.setBool('login', false);
+                                    loginData.setString('username', username);
+                                    Navigator.pushAndRemoveUntil(
+                                        context,
+                                        PageRouteBuilder(
+                                            transitionDuration:
+                                                Duration(seconds: 3),
+                                            transitionsBuilder: (context,
+                                                animation,
+                                                animationTime,
+                                                child) {
+                                              return ScaleTransition(
+                                                scale: animation,
+                                                child: child,
+                                                alignment: Alignment.center,
+                                              );
+                                            },
+                                            pageBuilder: (context, animation,
+                                                animationTime) {
+                                              return HomePage();
+                                            }),
+                                        // MaterialPageRoute(
+                                        //     builder: (context) =>
+                                        //         const HomePage()),
+                                        (route) => false);
+                                  } else {}
+                                },
+                                child: Text('Log In')),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+          ],
+        ),
+      ),
     );
+  }
+
+  Widget body() {
+    return SizedBox(
+        height: double.maxFinite,
+        width: double.maxFinite,
+        child: Image(
+            fit: BoxFit.fitHeight,
+            image: AssetImage('assets/screen_login.gif')));
   }
 }

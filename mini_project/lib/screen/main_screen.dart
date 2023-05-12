@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mini_project/screen/history_page.dart';
-import 'package:mini_project/screen/history_page_builder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'list_soal.dart';
 import 'package:mini_project/screen/home_page.dart';
 import 'package:mini_project/screen/account_page.dart';
@@ -15,8 +15,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _bottomNavigatorIndex = 0;
-  int dropDownValue = 0;
   var pageBody;
+  int point = 1000;
+  int session = 0;
+  late SharedPreferences dbIndex;
+
+  void initial() async {
+    dbIndex = await SharedPreferences.getInstance();
+    setState(() {
+      dbIndex.getInt('points') == null
+          ? point = 1000
+          : point = dbIndex.getInt('points')!;
+      dbIndex.setInt('points', point);
+      dbIndex.getInt('dbSession') == null
+          ? session = 0
+          : session = dbIndex.getInt('dbSession')!;
+      dbIndex.setInt('dbSession', session);
+    });
+  }
+
+  @override
+  void initState() {
+    initial();
+    // TODO: implement initState
+    super.initState();
+  }
 
   void _onSelectedItem(int index) {
     setState(() {
@@ -28,7 +51,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sanshuumaru'),
+        title: Text('Sansuumaru'),
         centerTitle: true,
       ),
       body: body(),
@@ -36,15 +59,33 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           children: [
             Container(
-              height: 200,
+              alignment: Alignment.bottomLeft,
+              margin: EdgeInsets.symmetric(horizontal: 30),
+              height: 50,
               width: double.maxFinite,
-              color: Colors.amber,
+              color: Color.fromARGB(0, 236, 236, 236),
+              child: ListView(
+                children: [
+                  Table(
+                    children: [
+                      TableRow(children: [
+                        Text('My Qoints'),
+                        Text(': ${dbIndex.getInt('points')}'),
+                      ]),
+                      TableRow(children: [
+                        Text('My Session'),
+                        Text(': ${dbIndex.getInt('dbSession')}'),
+                      ]),
+                    ],
+                  )
+                ],
+              ),
             ),
             SizedBox(
               height: 10,
             ),
             Card(
-              color: Colors.cyan,
+              color: Color.fromARGB(255, 96, 81, 170),
               margin: EdgeInsets.all(10),
               child: InkWell(
                 onTap: () {
@@ -62,11 +103,14 @@ class _HomePageState extends State<HomePage> {
                     margin: EdgeInsets.only(left: 20),
                     alignment: Alignment.centerLeft,
                     height: 30,
-                    child: Text('SD')),
+                    child: Text(
+                      'SD',
+                      style: TextStyle(color: Colors.white),
+                    )),
               ),
             ),
             Card(
-              color: Colors.cyan,
+              color: Color.fromARGB(255, 96, 81, 170),
               margin: EdgeInsets.all(10),
               child: InkWell(
                 onTap: () {
@@ -84,11 +128,11 @@ class _HomePageState extends State<HomePage> {
                     margin: EdgeInsets.only(left: 20),
                     alignment: Alignment.centerLeft,
                     height: 30,
-                    child: Text('SMP')),
+                    child: Text('SMP', style: TextStyle(color: Colors.white))),
               ),
             ),
             Card(
-              color: Colors.cyan,
+              color: Color.fromARGB(255, 96, 81, 170),
               margin: EdgeInsets.all(10),
               child: InkWell(
                 onTap: () {
@@ -106,11 +150,11 @@ class _HomePageState extends State<HomePage> {
                     margin: EdgeInsets.only(left: 20),
                     alignment: Alignment.centerLeft,
                     height: 30,
-                    child: Text('SMA')),
+                    child: Text('SMA', style: TextStyle(color: Colors.white))),
               ),
             ),
             Card(
-                color: Colors.cyan,
+                color: Color.fromARGB(255, 96, 81, 170),
                 margin: EdgeInsets.all(10),
                 child: InkWell(
                   onTap: () {
@@ -125,18 +169,20 @@ class _HomePageState extends State<HomePage> {
                       margin: EdgeInsets.only(left: 20),
                       alignment: Alignment.centerLeft,
                       height: 30,
-                      child: Text('History')),
+                      child: Text('History',
+                          style: TextStyle(color: Colors.white))),
                 )),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.red,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
         currentIndex: _bottomNavigatorIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Color.fromARGB(255, 255, 255, 255),
         onTap: _onSelectedItem,
       ),
     );

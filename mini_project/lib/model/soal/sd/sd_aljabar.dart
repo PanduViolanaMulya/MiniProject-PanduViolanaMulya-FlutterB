@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 class AljabarSD {
   final String subject = 'aljabar';
   final String grade = 'SD';
@@ -8,6 +11,7 @@ class AljabarSD {
   final String jawabD;
   final String benar;
   bool available;
+  Color condition = Color.fromARGB(255, 255, 0, 0);
 
   AljabarSD({
     required this.soal,
@@ -17,6 +21,7 @@ class AljabarSD {
     required this.jawabD,
     required this.benar,
     required this.available,
+    required this.condition,
   });
 }
 
@@ -29,6 +34,7 @@ List<AljabarSD> aljabarSD = [
     jawabD: '0',
     benar: 'b',
     available: true,
+    condition: Color.fromARGB(255, 255, 0, 0),
   ),
   AljabarSD(
     soal: '7 - 1 + 6 : 4 = . . .',
@@ -38,6 +44,7 @@ List<AljabarSD> aljabarSD = [
     jawabD: '3',
     benar: 'c',
     available: false,
+    condition: Color.fromARGB(255, 255, 0, 0),
   ),
   AljabarSD(
     soal: '9 x 13 = . . .',
@@ -47,6 +54,7 @@ List<AljabarSD> aljabarSD = [
     jawabD: '117',
     benar: 'd',
     available: false,
+    condition: Color.fromARGB(255, 255, 0, 0),
   ),
   AljabarSD(
     soal: '(15 + 30) : 5 = . . .',
@@ -56,5 +64,6 @@ List<AljabarSD> aljabarSD = [
     jawabD: '16',
     benar: 'c',
     available: false,
+    condition: Color.fromARGB(255, 255, 0, 0),
   ),
 ];

@@ -23,9 +23,9 @@ class ResultHelper {
     var db = openDatabase(join(await getDatabasesPath(), 'result_db.db'),
         onCreate: (db, version) async {
       await db.execute(
-        '''CREATE TABLE $_tableName(number INTEGER PRIMARY KEY, grade TEXT, subject TEXT, yourAnswer TEXT, correctAnswer TEXT, point INTEGER)''',
+        '''CREATE TABLE $_tableName(id INTEGER PRIMARY KEY,number INTEGER, session INTEGER, grade TEXT, subject TEXT, yourAnswer TEXT, correctAnswer TEXT, point INTEGER)''',
       );
-    }, version: 1);
+    }, version: 2);
     return db;
   }
 
@@ -34,28 +34,28 @@ class ResultHelper {
     await db.insert(_tableName, resultModel.toMap());
   }
 
-  Future<List<ResultModel>> getContact() async {
+  Future<List<ResultModel>> getResult() async {
     final Database db = await database;
     List<Map<String, dynamic>> result = await db.query(_tableName);
     return result.map((e) => ResultModel.fromMap(e)).toList();
   }
 
-  Future<ResultModel> getResultByNumber(int number) async {
+  Future<ResultModel> getResultByNumber(int id) async {
     final Database db = await database;
     List<Map<String, dynamic>> result = await db.query(
       _tableName,
-      where: 'number = ?',
-      whereArgs: [number],
+      where: 'id = ?',
+      whereArgs: [id],
     );
     return result.map((e) => ResultModel.fromMap(e)).first;
   }
 
-  Future<void> deleteResult(int number) async {
+  Future<void> deleteResult(int id) async {
     final db = await database;
     await db.delete(
       _tableName,
-      where: 'number = ?',
-      whereArgs: [number],
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 }
